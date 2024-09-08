@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start-dev": "nodemon ./src/server.js",
     "start": "node ./src/server.js",
-    "lint": "eslint ./src"
+    "lint": "eslint ./src",
+    "newman-test": "newman run ./test/test.postman_collection.json --environment ./test/test.postman_environment.json"
   },
   "keywords": [],
   "author": "",
@@ -21,6 +22,7 @@
   },
   "dependencies": {
     "@hapi/hapi": "^21.3.10",
+    "dotenv": "^16.4.5",
     "nanoid": "^3.3.7"
   }
 }
