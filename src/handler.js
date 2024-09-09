@@ -63,12 +63,22 @@ const addBookHandler = (request, h) => {
   }
 };
 
-const getAllBooksHandler = () => ({
-  status: 'success',
-  data: {
-    books,
-  },
-});
+const getAllBooksHandler = (request, h) => {
+  // const { id, name, publisher } = request.payload;
+
+  const response = h.response({
+    status: 'success',
+    data: {
+      books
+    }
+  });
+  response.code(200);
+  return response;
+
+
+
+};
+
 
 const getBookByIdHandler = (request, h) => {
   const { id, readPage, pageCount } = request.params;
@@ -107,4 +117,61 @@ const getBookByIdHandler = (request, h) => {
 
 
 };
-module.exports = { addBookHandler, getAllBooksHandler, getBookByIdHandler };
+
+const editBookByIdHandler = (request, h) => {
+  const { id } = request.params;
+  const { name, year, author, summary, publisher, pageCount, readPage, reading } = request.payload;
+  const updatedAt = new Date().toISOString();
+  const bookIndex = books.findIndex((book) => book.id === id);
+  const bookIndexer = bookIndex !== -1;
+  const nullName = name == null;
+  const errorCount = readPage >= pageCount;
+
+  if (nullName) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. Mohon isi nama buku'
+    });
+    response.code(400);
+    return response;
+  }
+
+  if (errorCount) {
+    const response = h.response({
+      status: 'fail',
+      message: 'Gagal memperbarui buku. readPage tidak boleh lebih besar dari pageCount'
+    });
+    response.code(400);
+    return response;
+  }
+  if (bookIndexer) {
+    books[bookIndex] = {
+      ...books[bookIndex],
+      name,
+      year,
+      author,
+      summary,
+      publisher,
+      pageCount,
+      readPage,
+      reading,
+      updatedAt
+    };
+
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil diperbarui',
+    });
+    response.code(200);
+    return response;
+  }
+
+  const response = h.response({
+    status: 'fail',
+    message: 'Gagal memperbarui buku. Id tidak ditemukan'
+  });
+  response.code(404);
+  return response;
+
+};
+module.exports = { addBookHandler, getAllBooksHandler, getBookByIdHandler, editBookByIdHandler };
