@@ -16,7 +16,7 @@ const addBookHandler = (request, h) => {
   books.push(newBook);
 
   const bookSuccess = books.filter((book) => book.id === id).length > 0;
-  const nullName = name == null;
+  const nullName = name == undefined;
   const errorCount = readPage >= pageCount;
 
   if (bookSuccess && !nullName && !errorCount) {
@@ -64,12 +64,17 @@ const addBookHandler = (request, h) => {
 };
 
 const getAllBooksHandler = (request, h) => {
-  // const { id, name, publisher } = request.payload;
 
+  const bookVariabel = books;
+  const formatBook = bookVariabel.map((book) => ({
+    id: book.id,
+    name: book.name,
+    publisher: book.publisher
+  }));
   const response = h.response({
     status: 'success',
     data: {
-      books
+      books: formatBook
     }
   });
   response.code(200);
