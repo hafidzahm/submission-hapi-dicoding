@@ -7,37 +7,19 @@ const addBookHandler = (request, h) => {
   const id = nanoid(16);
   const insertedAt = new Date().toISOString();
   const updatedAt = insertedAt;
-  const finished = pageCount === readPage;
 
-  const newBook = {
-    id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt
-  };
 
-  books.push(newBook);
-
-  const bookSuccess = books.filter((book) => book.id === id).length > 0;
   const nullName = name == undefined;
   const errorCount = readPage >= pageCount;
-
-  if (bookSuccess && !nullName && !errorCount) {
-    const response = h.response({
-      status: 'success',
-      message: 'Buku berhasil ditambahkan',
-      data: {
-        bookId: id,
-      },
-    });
-    response.code(201);
-    return response;
-  }
+  const finished = pageCount === readPage;
 
   if (finished) {
     const response = h.response({
-      status: 'success',
-      message: 'Buku berhasil ditambahkan',
+      status:'success',
+      message:'Buku berhasil ditambahkan',
       data: {
         bookId: id,
-      },
+      }
     });
     response.code(201);
     return response;
@@ -61,20 +43,43 @@ const addBookHandler = (request, h) => {
     response.code(400);
     return response;
   }
+
+
+  const newBook = {
+    id, name, year, author, summary, publisher, pageCount, readPage, finished, reading, insertedAt, updatedAt
+  };
+
+  books.push(newBook);
+  const bookSuccess = books.filter((book) => book.id === id).length > 0;
+
+  if (bookSuccess) {
+    const response = h.response({
+      status: 'success',
+      message: 'Buku berhasil ditambahkan',
+      data: {
+        bookId: id,
+      },
+    });
+    response.code(201);
+    return response;
+  }
+
+
 };
 
 const getAllBooksHandler = (request, h) => {
-
   const bookVariabel = books;
   const formatBook = bookVariabel.map((book) => ({
     id: book.id,
     name: book.name,
     publisher: book.publisher
   }));
+  console.log(formatBook);
+
   const response = h.response({
     status: 'success',
     data: {
-      books: formatBook
+      books: formatBook,
     }
   });
   response.code(200);
