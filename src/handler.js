@@ -61,22 +61,19 @@ const getAllBooksHandler = (request, h) => {
   const undefinedName = name === undefined;
 
   if (!undefinedName) {
-    bookVariabel.filter((book) => book.name.toLowerCase().includes(name.toLowerCase));
+    bookVariabel = bookVariabel.filter((book) => book.name.toLowerCase().includes(name.toLowerCase()));
   }
 
-  if (reading === '1') {
-    bookVariabel.filter((book) => book.reading === true);
-  }
-  if (reading === '0') {
-    bookVariabel.filter((book) => book.reading === false);
+  if (reading !== undefined) {
+    const isReading = reading === '1';
+    bookVariabel = bookVariabel.filter((book) => book.reading === isReading);
   }
 
-  if (finished ==='1') {
-    bookVariabel.filter((book) => book.finished === true);
+  if (finished !== undefined) {
+    const isFinished = finished === '1';
+    bookVariabel = bookVariabel.filter((book) => book.finished === isFinished);
   }
-  if (finished === '0') {
-    bookVariabel.filter((book) => book.finished === false);
-  }
+
 
   const formatBook = bookVariabel.map((book) => ({
     id: book.id,
