@@ -23,6 +23,7 @@
   "dependencies": {
     "@hapi/hapi": "^21.3.10",
     "dotenv": "^16.4.5",
-    "nanoid": "^3.3.7"
+    "nanoid": "^3.3.7",
+    "newman": "^6.2.1"
   }
 }
