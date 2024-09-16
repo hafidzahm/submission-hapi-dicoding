@@ -80,7 +80,6 @@ const getAllBooksHandler = (request, h) => {
     name: book.name,
     publisher: book.publisher
   }));
-  console.log(formatBook);
 
   const response = h.response({
     status: 'success',
